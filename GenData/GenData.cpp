@@ -3,6 +3,7 @@
 #include<opencv2/core/core.hpp>
 #include<opencv2/highgui/highgui.hpp>
 #include<opencv2/imgproc/imgproc.hpp>
+#include<opencv2/imgproc/types_c.h>
 #include<opencv2/ml/ml.hpp>
 
 #include<iostream>
@@ -16,7 +17,7 @@ const int RESIZED_IMAGE_HEIGHT = 30;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 int main() {
-
+ 
     cv::Mat imgTrainingNumbers;         // input image
     cv::Mat imgGrayscale;               // 
     cv::Mat imgBlurred;                 // declare various images
@@ -46,7 +47,7 @@ int main() {
     }
 
     cv::cvtColor(imgTrainingNumbers, imgGrayscale, CV_BGR2GRAY);        // convert to grayscale
-
+    
     cv::GaussianBlur(imgGrayscale,              // input image
         imgBlurred,                             // output image
         cv::Size(5, 5),                         // smoothing window width and height in pixels
@@ -61,7 +62,8 @@ int main() {
         11,                                     // size of a pixel neighborhood used to calculate threshold value
         2);                                     // constant subtracted from the mean or weighted mean
 
-    cv::imshow("imgThresh", imgThresh);         // show threshold image for reference
+
+    //cv::imshow("imgThresh", imgThresh);         // show threshold image for reference
 
     imgThreshCopy = imgThresh.clone();          // make a copy of the thresh image, this in necessary b/c findContours modifies the image
 
@@ -82,8 +84,8 @@ int main() {
             cv::Mat matROIResized;
             cv::resize(matROI, matROIResized, cv::Size(RESIZED_IMAGE_WIDTH, RESIZED_IMAGE_HEIGHT));     // resize image, this will be more consistent for recognition and storage
 
-            cv::imshow("matROI", matROI);                               // show ROI image for reference
-            cv::imshow("matROIResized", matROIResized);                 // show resized ROI image for reference
+            //cv::imshow("matROI", matROI);                               // show ROI image for reference
+            //cv::imshow("matROIResized", matROIResized);                 // show resized ROI image for reference
             cv::imshow("imgTrainingNumbers", imgTrainingNumbers);       // show training numbers image, this will now have red rectangles drawn on it
 
             int intChar = cv::waitKey(0);           // get key press
@@ -112,10 +114,10 @@ int main() {
 
     cv::FileStorage fsClassifications("classifications.xml", cv::FileStorage::WRITE);           // open the classifications file
 
-    if (fsClassifications.isOpened() == false) {                                                        // if the file was not opened successfully
-        std::cout << "error, unable to open training classifications file, exiting program\n\n";        // show error message
-        return(0);                                                                                      // and exit program
-    }
+     if (fsClassifications.isOpened() == false) {                                                        // if the file was not opened successfully
+         std::cout << "error, unable to open training classifications file, exiting program\n\n";        // show error message
+         return(0);                                                                                      // and exit program
+     }
 
     fsClassifications << "classifications" << matClassificationInts;        // write classifications into classifications section of classifications file
     fsClassifications.release();                                            // close the classifications file

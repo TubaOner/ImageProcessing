@@ -37,7 +37,13 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-int main() {
+int main(int argc, char** argv) {
+    
+    if(argc != 2) {
+        std::cout << "Please enter just one image file name" << std::endl;
+        return 1;
+    }
+        
     std::vector<ContourWithData> allContoursWithData;           // declare empty vectors,
     std::vector<ContourWithData> validContoursWithData;         // we will fill these shortly
 
@@ -79,7 +85,7 @@ int main() {
 
     // test ///////////////////////////////////////////////////////////////////////////////
 
-    cv::Mat matTestingNumbers = cv::imread("test1.png");            // read in the test numbers image
+    cv::Mat matTestingNumbers = cv::imread(argv[1]);            // read in the test numbers image
 
     if (matTestingNumbers.empty()) {                                // if unable to open image
         std::cout << "error: image not read from file\n\n";         // show error message on command line
